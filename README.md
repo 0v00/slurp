@@ -1,6 +1,6 @@
 # Slurp CLI Tool
 
-Slurp is a command-line tool that allows you to fetch, list, rank, and summarize research papers from arXiv based on your interests. It provides functionality to generate simplified summaries of paper abstracts using OpenAI or Anthropic APIs.
+Slurp is a command-line tool that allows you to fetch, list, rank, and summarize research papers from arXiv based on your interests. It provides functionality to rank research papers based on keywords and generate simplified summaries of paper abstracts using OpenAI or Anthropic APIs.
 
 ## Install
 
