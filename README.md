@@ -17,7 +17,7 @@ Run the setup command to configure your research interests and generate a `confi
 
 ```slurp setup```
 
-Enter your research interests when prompted, separated by commas.
+Enter your research interests and keywords when prompted, separated by commas.
 
 Open the generated `config.toml` file and add your OpenAI and/or Anthropic API keys.
 
