@@ -126,7 +126,13 @@ Key Terms and Ideas:
 # ...more key terms and ideas
 
 Key Takeaway:
-This study proposes a synchronisation-oriented approach to adaptive control, which views model reference adaptation as a synchronisation problem between actual and virtual dynamic systems. By designing a coupling input to achieve desired closed-loop error dynamics and shaping the collective behaviour through input allocation, the proposed approach enables a more systematic and generalised way to design adaptive control systems with improved transient response characteristics and mitigated peaking phenomenon.
+This study proposes a synchronisation-oriented approach to adaptive control, 
+which views model reference adaptation as a synchronisation problem between actual and virtual dynamic systems.
+By designing a coupling input to achieve desired closed-loop error dynamics
+and shaping the collective behaviour through input allocation,
+the proposed approach enables a more systematic and generalised way
+to design adaptive control systems with improved transient response characteristics
+and mitigated peaking phenomenon.
 ```
 
 ### Download Paper
