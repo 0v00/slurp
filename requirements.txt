@@ -1,0 +1,6 @@
+toml
+requests
+beautifulsoup4
+ruff
+openai
+anthropic

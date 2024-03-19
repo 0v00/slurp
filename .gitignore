@@ -1,0 +1,35 @@
+# Virtual environment
+myvenv/
+
+# Python compiled files
+**/*.pyc
+**/__pycache__/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+
+*.db
+
+config.toml
+
+# macOS files
+.DS_Store
+
+.vscode/
+
+# Logs and cache
+*.log
+*.cache
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Other
+.env
+
+.ruff_cache
