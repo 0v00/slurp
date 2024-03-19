@@ -19,6 +19,8 @@ Run the setup command to configure your research interests and generate a `confi
 
 Enter your research interests and keywords when prompted, separated by commas.
 
+Interests follow arXiv category taxonomy e.g. `ro` for `robotics`, `cv` for `computer vision` etc.
+
 Open the generated `config.toml` file and add your OpenAI and/or Anthropic API keys.
 
 ## Usage
@@ -42,7 +44,7 @@ To list the fetched papers, use the `list` command:
 
 Example:
 
-```slurp list --interest "robotics" --count 3```
+```slurp list --interest "ro" --count 3```
 
 Output:
 
