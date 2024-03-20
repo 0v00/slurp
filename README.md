@@ -1,15 +1,19 @@
-# Slurp CLI Tool
+# Slurp
 
 Slurp is a command-line tool that allows you to fetch, list, rank, and summarize research papers from arXiv based on your interests. It provides functionality to rank research papers based on keywords and generate simplified summaries of paper abstracts using OpenAI or Anthropic APIs.
 
 ## Install
 
-1. Create and activate a virtual env
-- `python3 -m venv myvenv`
-- `source myvenv/bin/activate`
+Create and activate a virtual env:
+```bash
+python3 -m venv myvenv
+source myvenv/bin/activate
+```
 
-2. Install
-- `pip install -e .`
+Install:
+```bash
+pip install -e .
+```
 
 ## Setup
 
@@ -19,7 +23,9 @@ Run the setup command to configure your research interests and generate a `confi
 
 Enter your research interests and keywords when prompted, separated by commas.
 
-Interests follow arXiv category taxonomy e.g. `ro` for `robotics`, `cv` for `computer vision` etc.
+Add interests according to arXiv category taxonomy e.g. `ro` for `robotics`, `cv` for `computer vision` etc.
+
+Keywords can be any strings e.g. `llm`, `reinforcement learning` etc.
 
 Open the generated `config.toml` file and add your OpenAI and/or Anthropic API keys.
 
@@ -155,8 +161,11 @@ Output:
 ```Paper downloaded successfully: /PATH/TO/DIR/34d50a36-21de-4395-8d5e-b2566b46daee.pdf```
 
 ### TODO:
+- [ ] Add option for `slurp up` to only fetch the `N` most recent papers
 - [ ] Summarize entire paper
 - [ ] Summarize page in a paper
-- [ ] `PAPER_ID` is too long, pick another option or change how `abstract` and `download` subcommands work
+- [ ] `PAPER_ID` is too long, pick another option for how `abstract` and `download` subcommands work
 - [ ] Use arXiv API so we don't get rate-limited or blocked
-- [ ] Do the meme, rewrite in Rust and make a TUI
+- [ ] Improve ranking - use embeddings
+- [ ] Add paper overlap feature - use embeddings
+- [ ] Do the meme, rewrite in Rust and make into a TUI
