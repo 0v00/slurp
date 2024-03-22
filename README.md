@@ -114,14 +114,14 @@ Paper downloaded successfully: /PATH/TO/DIR/c6d4f799-1c9b-450b-857b-a861a8405e5b
 
 To generate a simplified summary of a paper's abstract, as well as discover key words and terms useful for understanding the paper, use the `abstract` command:
 
-```slurp abstract PAPER_ID --service SERVICE```
+```slurp abstract PAPER_URL --service SERVICE```
 
-- `PAPER_ID`: The UUID of the paper.
+- `PAPER_URL`: The arXiv URL of the paper.
 - `--service`: Select the service to use for generating the summary (`openai` or `anthropic`).
 
 Example:
 
-```slurp abstract 34d50a36-21de-4395-8d5e-b2566b46daee --service anthropic```
+```slurp abstract https://arxiv.org/abs/2403.14626 --service anthropic```
 
 Output:
 
@@ -145,16 +145,16 @@ and mitigated peaking phenomenon.
 
 ### Download Paper
 
-To download a paper's PDF based on its UUID, use the `download` command:
+To download a paper's PDF based on its URL, use the `download` command:
 
-```slurp download PAPER_ID [--path PATH]```
+```slurp download PAPER_URL [--path PATH]```
 
-- `PAPER_ID`: The UUID of the paper.
+- `PAPER_URL`: The arXiv URL of the paper.
 - `--path`: Specify the download path (default: current working directory).
 
 Example:
 
-```slurp download 34d50a36-21de-4395-8d5e-b2566b46daee --path /PATH/TO/DIR/```
+```slurp download https://arxiv.org/abs/2403.14626 --path /PATH/TO/DIR/```
 
 Output:
 
@@ -164,7 +164,6 @@ Output:
 - [ ] Add option for `slurp up` to only fetch the `N` most recent papers
 - [ ] Summarize entire paper
 - [ ] Summarize page in a paper
-- [ ] `PAPER_ID` is too long, pick another option for how `abstract` and `download` subcommands work
 - [ ] Use arXiv API so we don't get rate-limited or blocked
 - [ ] Improve ranking - use embeddings
 - [ ] Add paper overlap feature - use embeddings

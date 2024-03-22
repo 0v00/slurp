@@ -1,11 +1,10 @@
 import argparse
 import toml
-import requests
 import os
-from scraper import scrape_arxiv
-from db import init_db, save_papers, get_paper_by_id, get_all_papers
+from scraper import scrape_arxiv, scrape_paper
+from db import init_db, save_papers, save_paper, get_paper_by_url, get_all_papers
 from display import list_papers
-from download import download_ranked_papers
+from download import download_paper, download_ranked_papers
 from summary import generate_summary, rank_papers
 
 
@@ -75,7 +74,7 @@ def abstract_cmd(args):
         print("Database not found. Run 'slurp up' first to fetch papers.")
         return
 
-    paper_id = args.paper_id
+    paper_url = args.paper_url
     service = args.service
 
     if not os.path.exists("config.toml"):
@@ -97,13 +96,14 @@ def abstract_cmd(args):
         print(f"API key for {service} not found in config.toml.")
         return
 
-    paper = get_paper_by_id(paper_id)
-    if paper:
-        abstract = paper[3]
-        summary = generate_summary(abstract, service, api_key)
-        print(summary)
-    else:
-        print(f"Paper with ID {paper_id} not found.")
+    paper = get_paper_by_url(paper_url)
+    if not paper:
+        paper = scrape_paper(paper_url)
+        save_paper(paper)
+
+    abstract = paper["abstract"]
+    summary = generate_summary(abstract, service, api_key)
+    print(summary)
 
 
 def rank_cmd(args):
@@ -154,23 +154,15 @@ def download_cmd(args):
         print("Database not found. Run 'slurp up' first to fetch papers.")
         return
 
-    paper_id = args.paper_id
+    paper_url = args.paper_url
     download_path = args.path or os.getcwd()
 
-    paper = get_paper_by_id(paper_id)
-    if paper:
-        pdf_url = paper[5]
-        response = requests.get(pdf_url)
-        if response.status_code == 200:
-            filename = f"{paper_id}.pdf"
-            file_path = os.path.join(download_path, filename)
-            with open(file_path, "wb") as file:
-                file.write(response.content)
-            print(f"Paper downloaded successfully: {file_path}")
-        else:
-            print("Failed to download the paper.")
-    else:
-        print(f"Paper with ID {paper_id} not found.")
+    paper = get_paper_by_url(paper_url)
+    if not paper:
+        paper = scrape_paper(paper_url)
+        save_paper(paper)
+
+    download_paper(paper, download_path)
 
 
 def main():
@@ -197,7 +189,7 @@ def main():
     paper_parser = subparsers.add_parser(
         "abstract", help="Generate a simplified summary of a paper's abstract"
     )
-    paper_parser.add_argument("paper_id", help="UUID of the paper")
+    paper_parser.add_argument("paper_url", help="URL of the paper")
     paper_parser.add_argument(
         "--service",
         choices=["openai", "anthropic"],
@@ -209,7 +201,7 @@ def main():
     download_parser = subparsers.add_parser(
         "download", help="Download a paper's PDF based on its UUID"
     )
-    download_parser.add_argument("paper_id", help="UUID of the paper")
+    download_parser.add_argument("paper_url", help="URL of the paper")
     download_parser.add_argument(
         "--path", help="Download path (default: current working directory)"
     )
