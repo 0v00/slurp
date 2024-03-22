@@ -66,3 +66,29 @@ def scrape_arxiv(interests):
             print(f"no matching url found for interest: {interest}")
 
     return papers
+
+
+def scrape_paper(url):
+    """
+    Scrape a single paper based on URL
+    """
+
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    abstract = soup.find("blockquote", class_="abstract").text.strip()
+    abstract = abstract.replace("Abstract:", "").strip()
+    pdf_url = (
+        "https://arxiv.org"
+        + soup.find("a", class_="abs-button", text="Download PDF")["href"]
+    )
+    paper = {
+        "title": soup.find("h1", class_="title").text.strip(),
+        "authors": soup.find("div", class_="authors")
+        .text.replace("Authors:", "")
+        .strip(),
+        "abstract": abstract,
+        "url": url,
+        "pdf_url": pdf_url,
+    }
+    return paper

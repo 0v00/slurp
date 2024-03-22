@@ -35,7 +35,6 @@ def list_papers(interest=None, count="10"):
     else:
         for paper in papers:
             print(f"Title: {paper[1]}")
-            print(f"ID: {paper[0]}")
             print(f"URL: {paper[3]}")
             print(f"PDF URL: {paper[4]}")
             print()
