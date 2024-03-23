@@ -133,7 +133,7 @@ def rank_cmd(args):
 
 def download_cmd(args):
     """
-    Download a paper's PDF based on its UUID
+    Download a paper's PDF based on its URL
     """
     if not os.path.exists("papers.db"):
         print("Database not found. Run 'slurp up' first to fetch papers.")
