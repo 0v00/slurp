@@ -12,7 +12,7 @@ source myvenv/bin/activate
 
 Install:
 ```bash
-pip install -e .
+pip3 install -e '.[dev]' 
 ```
 
 ## Setup
@@ -75,18 +75,16 @@ PDF URL: https://arxiv.org/pdf/2403.09583
 
 To rank the fetched papers based on title and abstract relevance to `config.toml` keywords, use the `rank` command:
 
-```slurp rank COUNT --service SERVICE [--download] [--path PATH]```
+```slurp rank COUNT --method METHOD```
 
 - `COUNT`: Specify the number of top papers to rank and display.
-- `--service`: Select the service to use for ranking (required). Choose between `openai` and `anthropic`.
-- `--download`: Download the ranked papers (optional).
-- `--path`: Specify the download path for ranked papers (optional, default: current working directory).
+- `--method`: Select the ranking method to use (optional, default: `cosine`). Choose between `cosine` for cosine similarity and `knn` for k-nearest neighbors.
 
 These rankings will be generated from analyzing **all** papers (e.g. machine learning, robotics, etc.) in the db.
 
 Example:
 
-```slurp rank 5 --service anthropic --download --path /path/to/download```
+```slurp rank 5 --method cosine```
 
 Output:
 
@@ -94,20 +92,13 @@ Output:
 Here is the ranking of the paper titles and abstracts from most relevant to least relevant, based on the given keywords ['reinforcement', 'llm']:
 
 1. Title: Larimar: Large Language Models with Episodic Memory Control
-ID: 1736f9d2-3f6c-43be-8085-c6b78ef5d6b1
 URL: https://arxiv.org/abs/2403.11901
 
 2. Title: Supervised Fine-Tuning as Inverse Reinforcement Learning
-ID: 3fd784f5-5aac-44cc-98e6-ac419672a875
 URL: https://arxiv.org/abs/2403.12017
 
 3. Title: Reinforcement Learning with Latent State Inference for Autonomous On-ramp Merging under Observation Delay
-ID: c6d4f799-1c9b-450b-857b-a861a8405e5b
 URL: https://arxiv.org/abs/2403.11852
-
-Paper downloaded successfully: /PATH/TO/DIR/1736f9d2-3f6c-43be-8085-c6b78ef5d6b1.pdf
-Paper downloaded successfully: /PATH/TO/DIR/3fd784f5-5aac-44cc-98e6-ac419672a875.pdf
-Paper downloaded successfully: /PATH/TO/DIR/c6d4f799-1c9b-450b-857b-a861a8405e5b.pdf
 ```
 
 ### Generate Abstract Summary
@@ -158,7 +149,7 @@ Example:
 
 Output:
 
-```Paper downloaded successfully: /PATH/TO/DIR/34d50a36-21de-4395-8d5e-b2566b46daee.pdf```
+```Paper downloaded successfully: /PATH/TO/DIR/TITLE.pdf```
 
 ### TODO:
 - [ ] Add option for `slurp up` to only fetch the `N` most recent papers
