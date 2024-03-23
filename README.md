@@ -77,7 +77,7 @@ PDF URL: https://arxiv.org/pdf/2403.09583
 
 ### Rank Papers
 
-To rank the scraped papers based on title and abstract relevance to `config.toml` keywords, use the `rank` command:
+To rank the scraped papers based on title and abstract similarity to `config.toml` keywords, use the `rank` command:
 
 ```slurp rank COUNT```
 
