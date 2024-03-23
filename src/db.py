@@ -142,3 +142,41 @@ def get_paper_by_url(url):
         return paper_dict
     else:
         return None
+
+
+def get_n_papers(interest=None, count="10"):
+    conn = sqlite3.connect("papers.db")
+    c = conn.cursor()
+
+    if interest:
+        if count == "all":
+            c.execute("SELECT * FROM papers WHERE interest = ?", (interest,))
+        else:
+            c.execute(
+                "SELECT * FROM papers WHERE interest = ? LIMIT ?",
+                (interest, int(count)),
+            )
+    else:
+        if count == "all":
+            c.execute("SELECT * FROM papers")
+        else:
+            c.execute("SELECT * FROM papers LIMIT ?", (int(count),))
+
+    papers = c.fetchall()
+    conn.close()
+
+    paper_dicts = []
+    for paper in papers:
+        paper_dict = {
+            "id": paper[0],
+            "title": paper[1],
+            "authors": paper[2],
+            "abstract": paper[3],
+            "url": paper[4],
+            "pdf_url": paper[5],
+            "interest": paper[6],
+            "scraped_at": paper[7],
+        }
+        paper_dicts.append(paper_dict)
+
+    return paper_dicts

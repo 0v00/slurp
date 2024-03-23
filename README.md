@@ -1,18 +1,25 @@
 # Slurp
 
-Slurp is a command-line tool that allows you to fetch, list, rank, and summarize research papers from arXiv based on your interests. It provides functionality to rank research papers based on keywords and generate simplified summaries of paper abstracts using OpenAI or Anthropic APIs.
+Slurp is a command-line tool that allows you to fetch, list, rank, and summarize research papers from arXiv based on your interests. It provides functionality to rank research papers based on keywords, and generate simplified summaries of paper abstracts using OpenAI or Anthropic APIs.
 
 ## Install
 
-Create and activate a virtual env:
+1. Clone the repo
+
+2. Create and activate a virtual env:
 ```bash
-python3 -m venv myvenv
+python -m venv myvenv
 source myvenv/bin/activate
 ```
 
-Install:
+3. Install:
 ```bash
-pip3 install -e . 
+pip install git+https://github.com/0v00/slurp.git
+```
+
+4. Alternatively, for developing:
+```bash
+pip install -e . 
 ```
 
 ## Setup
@@ -31,9 +38,9 @@ Open the generated `config.toml` file and add your OpenAI and/or Anthropic API k
 
 ## Usage
 
-### Fetch Papers
+### Scrape Papers
 
-To fetch papers based on your configured interests, run the following command:
+To scrape info from papers based on your configured interests, run the following command:
 
 ```slurp up```
 
@@ -41,11 +48,11 @@ This will scrape arXiv for papers matching your interests and save them to a loc
 
 ### List Papers
 
-To list the fetched papers, use the `list` command:
+To list the scraped papers, use the `list` command:
 
 ```slurp list [--interest INTEREST] [--count COUNT]```
 
-- `--interest`: Filter papers by a specific interest.
+- `--interest`: Filter papers by a specific interest. Uses arXiv category taxonomy.
 - `--count`: Specify the number of papers to list (default: 10). Use `all` to list all papers.
 
 Example:
@@ -56,48 +63,54 @@ Output:
 
 ```code
 Title: GaussianGrasper: 3D Language Gaussian Splatting for Open-vocabulary  Robotic Grasping
-ID: 5d45f243-a568-45db-8a3f-8dddee4dfc7f
 URL: https://arxiv.org/abs/2403.09637
 PDF URL: https://arxiv.org/pdf/2403.09637
 
 Title: Scalable Autonomous Drone Flight in the Forest with Visual-Inertial SLAM  and Dense Submaps Built without LiDAR
-ID: 5c02ec89-742a-40b9-a86b-a751aeed2eea
 URL: https://arxiv.org/abs/2403.09596
 PDF URL: https://arxiv.org/pdf/2403.09596
 
 Title: ExploRLLM: Guiding Exploration in Reinforcement Learning with Large  Language Models
-ID: 7c650a0f-7b61-4f34-9594-901819133d39
 URL: https://arxiv.org/abs/2403.09583
 PDF URL: https://arxiv.org/pdf/2403.09583
 ```
 
 ### Rank Papers
 
-To rank the fetched papers based on title and abstract relevance to `config.toml` keywords, use the `rank` command:
+To rank the scraped papers based on title and abstract relevance to `config.toml` keywords, use the `rank` command:
 
 ```slurp rank COUNT```
 
 - `COUNT`: Specify the number of top papers to rank and display.
 
-These rankings will be generated from analyzing **all** papers (e.g. machine learning, robotics, etc.) in the db.
+These rankings will be generated from analyzing **all** papers (e.g. machine learning, robotics, etc.) in the db. This uses `all-MiniLM-L6-v2` and `util.cos_sim`. It might take awhile for this command to run for the first time as it will download the model.
 
 Example:
 
-```slurp rank 5```
+```slurp rank 3```
 
 Output:
 
 ```code
-Here is the ranking of the paper titles and abstracts from most relevant to least relevant, based on the given keywords ['reinforcement', 'llm']:
+Keyword: reinforcement
+--------------------------------------------------
+Top 1
+Title: Rethinking Adversarial Inverse Reinforcement Learning: From the Angles  of Policy Imitation and Transferable Reward Recovery
+URL: https://arxiv.org/abs/2403.14593
+PDF URL: https://arxiv.org/pdf/2403.14593
+Interest: ml
 
-1. Title: Larimar: Large Language Models with Episodic Memory Control
-URL: https://arxiv.org/abs/2403.11901
+Top 2
+Title: Physics-Based Causal Reasoning for Safe & Robust Next-Best Action  Selection in Robot Manipulation Tasks
+URL: https://arxiv.org/abs/2403.14488
+PDF URL: https://arxiv.org/pdf/2403.14488
+Interest: ro
 
-2. Title: Supervised Fine-Tuning as Inverse Reinforcement Learning
-URL: https://arxiv.org/abs/2403.12017
-
-3. Title: Reinforcement Learning with Latent State Inference for Autonomous On-ramp Merging under Observation Delay
-URL: https://arxiv.org/abs/2403.11852
+Top 3
+Title: Tell Me What You Want (What You Really, Really Want): Addressing the  Expectation Gap for Goal Conveyance from Humans to Robots
+URL: https://arxiv.org/abs/2403.14344
+PDF URL: https://arxiv.org/pdf/2403.14344
+Interest: ro
 ```
 
 ### Generate Abstract Summary
@@ -108,6 +121,8 @@ To generate a simplified summary of a paper's abstract, as well as discover key 
 
 - `PAPER_URL`: The arXiv URL of the paper.
 - `--service`: Select the service to use for generating the summary (`openai` or `anthropic`).
+
+If you use an arXiv URL that is not yet in the DB, it will be scraped and added before generating a summary.
 
 Example:
 
@@ -155,6 +170,5 @@ Output:
 - [ ] Summarize entire paper
 - [ ] Summarize page in a paper
 - [ ] Use arXiv API so we don't get rate-limited or blocked
-- [ ] Improve ranking - use embeddings
 - [ ] Add paper overlap feature - use embeddings
 - [ ] Do the meme, rewrite in Rust and make into a TUI

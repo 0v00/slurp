@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
+from sentence_transformers.util import cos_sim
 
 
 def rank_papers_cosine(papers, keywords, count):
@@ -10,8 +10,8 @@ def rank_papers_cosine(papers, keywords, count):
     ranked_papers = {}
     for keyword in keywords:
         keyword_embedding = model.encode([keyword])
-        similarities = cosine_similarity(keyword_embedding, paper_embeddings)
-        top_indices = similarities.argsort()[0][-count:][::-1]
+        similarities = cos_sim(keyword_embedding, paper_embeddings)
+        top_indices = similarities.argsort(descending=True)[0][:count]
 
         keyword_ranked_papers = []
         for index in top_indices:
