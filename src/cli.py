@@ -6,7 +6,7 @@ from db import init_db, save_papers, save_paper, get_paper_by_url, get_all_paper
 from display import display_ranked_papers, list_papers
 from download import download_paper
 from summary import generate_summary
-from ranking import rank_papers_cosine, rank_papers_knn
+from ranking import rank_papers_cosine
 
 
 def setup_cmd(args):
@@ -123,19 +123,10 @@ def rank_cmd(args):
         config = toml.load(file)
 
     keywords = config["keywords"]
-    method = args.method
     count = args.count
 
     papers = get_all_papers()
-    if method == "cosine":
-        ranked = rank_papers_cosine(papers, keywords, count)
-    elif method == "knn":
-        ranked = rank_papers_knn(papers, keywords, count)
-    else:
-        print(
-            "Invalid ranking method selected. Please choose either 'cosine' or 'knn'."
-        )
-        return
+    ranked = rank_papers_cosine(papers, keywords, count)
 
     display_ranked_papers(ranked)
 

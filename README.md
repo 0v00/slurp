@@ -12,7 +12,7 @@ source myvenv/bin/activate
 
 Install:
 ```bash
-pip3 install -e '.[dev]' 
+pip3 install -e . 
 ```
 
 ## Setup
@@ -75,16 +75,15 @@ PDF URL: https://arxiv.org/pdf/2403.09583
 
 To rank the fetched papers based on title and abstract relevance to `config.toml` keywords, use the `rank` command:
 
-```slurp rank COUNT --method METHOD```
+```slurp rank COUNT```
 
 - `COUNT`: Specify the number of top papers to rank and display.
-- `--method`: Select the ranking method to use (optional, default: `cosine`). Choose between `cosine` for cosine similarity and `knn` for k-nearest neighbors using euclidean distance.
 
 These rankings will be generated from analyzing **all** papers (e.g. machine learning, robotics, etc.) in the db.
 
 Example:
 
-```slurp rank 5 --method cosine```
+```slurp rank 5```
 
 Output:
 
