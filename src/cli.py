@@ -3,9 +3,10 @@ import toml
 import os
 from scraper import scrape_arxiv, scrape_paper
 from db import init_db, save_papers, save_paper, get_paper_by_url, get_all_papers
-from display import list_papers
-from download import download_paper, download_ranked_papers
-from summary import generate_summary, rank_papers
+from display import display_ranked_papers, list_papers
+from download import download_paper
+from summary import generate_summary
+from ranking import rank_papers_cosine, rank_papers_knn
 
 
 def setup_cmd(args):
@@ -122,28 +123,21 @@ def rank_cmd(args):
         config = toml.load(file)
 
     keywords = config["keywords"]
-    service = args.service
+    method = args.method
     count = args.count
-    download = args.download
-
-    if service == "openai":
-        api_key = config["openai_api_key"]
-    elif service == "anthropic":
-        api_key = config["anthropic_api_key"]
-    else:
-        print("Invalid service selected. Please choose either 'openai' or 'anthropic'.")
-        return
-
-    if not api_key:
-        print(f"API key for {service} not found in config.toml.")
-        return
 
     papers = get_all_papers()
-    response = rank_papers(papers, keywords, service, api_key, count)
-    print(response)
-    if download:
-        download_path = args.path or os.getcwd()
-        download_ranked_papers(response, papers, download_path)
+    if method == "cosine":
+        ranked = rank_papers_cosine(papers, keywords, count)
+    elif method == "knn":
+        ranked = rank_papers_knn(papers, keywords, count)
+    else:
+        print(
+            "Invalid ranking method selected. Please choose either 'cosine' or 'knn'."
+        )
+        return
+
+    display_ranked_papers(ranked)
 
 
 def download_cmd(args):
@@ -208,30 +202,21 @@ def main():
     download_parser.set_defaults(func=download_cmd)
 
     rank_parser = subparsers.add_parser(
-        "rank", help="Rank papers based on keywords using OpenAI or Anthropic"
+        "rank",
+        help="Rank papers based on keywords using cosine similarity or k-nearest neighbors",
     )
     rank_parser.add_argument(
         "count", type=int, help="Number of top papers to rank and display"
     )
     rank_parser.add_argument(
-        "--service",
-        choices=["openai", "anthropic"],
-        required=True,
-        help="Select a service",
-    )
-    rank_parser.add_argument(
-        "--download",
-        action="store_true",
-        help="Download the ranked papers (default: False)",
-    )
-    rank_parser.add_argument(
-        "--path",
-        help="Download path for ranked papers (default: current working directory)",
+        "--method",
+        choices=["cosine", "knn"],
+        default="cosine",
+        help="Select a ranking method (default: cosine)",
     )
     rank_parser.set_defaults(func=rank_cmd)
 
     args = parser.parse_args()
-
     if args.command:
         args.func(args)
     else:

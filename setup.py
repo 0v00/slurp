@@ -9,9 +9,10 @@ setup(
         "toml",
         "requests",
         "beautifulsoup4",
-        "ruff",
         "anthropic",
         "openai",
+        "scikit-learn",
+        "sentence-transformers",
     ],
     extras_require={
         "dev": ["ruff"],

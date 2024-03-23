@@ -1,6 +1,16 @@
 import sqlite3
 
 
+def display_ranked_papers(ranked_papers):
+    for i, paper in enumerate(ranked_papers, start=1):
+        print(f"Rank: {i}")
+        print(f"Title: {paper['title']}")
+        print(f"URL: {paper['url']}")
+        print(f"PDF URL: {paper['pdf_url']}")
+        print(f"Interest: {paper['interest']}")
+        print("---")
+
+
 def list_papers(interest=None, count="10"):
     conn = sqlite3.connect("papers.db")
     c = conn.cursor()

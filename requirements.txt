@@ -1,6 +1,7 @@
 toml
 requests
 beautifulsoup4
-ruff
 openai
 anthropic
+scikit-learn
+sentence-transformers
