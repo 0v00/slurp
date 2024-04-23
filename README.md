@@ -4,22 +4,22 @@ Slurp is a command-line tool that allows you to fetch, list, rank, and summarize
 
 ## Install
 
-1. Clone the repo
-
-2. Create and activate a virtual env:
+1. Create and activate a virtual env:
 ```bash
 python -m venv myvenv
 source myvenv/bin/activate
 ```
 
-3. Install:
+2. Install:
 ```bash
 pip install git+https://github.com/0v00/slurp.git
 ```
 
-4. Alternatively, for developing:
+3. Alternatively, for developing:
 ```bash
-pip install -e . 
+git clone https://github.com/0v00/slurp.git
+cd slurp
+pip install -e .
 ```
 
 ## Setup
